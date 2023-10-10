@@ -1,6 +1,9 @@
+import string
+
 import numpy as np
 from numpy import ndarray
 import matplotlib.pyplot as plt
+
 
 # Function to zero out the diagonal of a matrix and return the original diagonal values.
 def zero_diagonal(matrix: np.ndarray) -> np.ndarray:
@@ -11,26 +14,31 @@ def zero_diagonal(matrix: np.ndarray) -> np.ndarray:
     # Return the original diagonal values.
     return diagonal_values
 
+
 # Function to restore the diagonal of a matrix using given diagonal values.
 def restore_diagonal(matrix: np.ndarray, diagonal_values: np.ndarray) -> np.ndarray:
     # Fill the diagonal of the matrix with the provided diagonal values.
     np.fill_diagonal(matrix, diagonal_values)
     return matrix
 
+
 # Function to visualize a matrix using a heatmap.
-def visualize_matrix(matrix: np.ndarray):
+def visualize_matrix(matrix: np.ndarray , title: string):
     plt.imshow(matrix, cmap='viridis')
     plt.colorbar()
-    plt.title("Matrix Visualization")
+    plt.title(title)
     plt.show()
+
 
 # Function to find the median value of a matrix.
 def find_median(matrix: np.ndarray) -> ndarray:
     return np.median(matrix)
 
+
 # Function to find the average (mean) value of a matrix.
 def find_average(matrix: ndarray) -> ndarray:
     return np.mean(matrix)
+
 
 # Function to find the nearest value to a given value in the matrix.
 def find_nearest_value(matrix: ndarray, value: float) -> float:
@@ -40,10 +48,12 @@ def find_nearest_value(matrix: ndarray, value: float) -> float:
     index = np.unravel_index(diff.argmin(), diff.shape)
     return matrix[index]
 
+
 # Function to generate a random integer matrix with values between 0 and 100.
 def generate_matrix(rows: int, cols: int) -> ndarray:
     matrix = np.random.randint(0, 101, (rows, cols))
     return matrix
+
 
 def main():
     # Number of rows and columns for the matrix.
@@ -52,7 +62,7 @@ def main():
 
     # Generate a random matrix.
     matrix = generate_matrix(rows, cols)
-    print(matrix)
+    visualize_matrix(matrix, "original matrix")
 
     # Ask the user to provide a value.
     value = float(input("Please, enter value to check: "))
@@ -66,12 +76,13 @@ def main():
     median = find_median(matrix)
     print(f"The median value of the matrix is: {median}")
 
-    # Visualize the matrix using a heatmap.
-    visualize_matrix(matrix)
-
     # Zero out the diagonal of the matrix and then restore it.
     saved_diagonal = zero_diagonal(matrix)
+    visualize_matrix(matrix, "diagonal 0")
+
     restore_diagonal(matrix, saved_diagonal)
+    visualize_matrix(matrix, "restored")
+
     print("\nRestored matrix:")
     print(matrix)
 
@@ -81,6 +92,8 @@ def main():
     normalized_matrix = (matrix - min_value) / (max_value - min_value)
     print("\nNormalized matrix:")
     print(normalized_matrix)
+    visualize_matrix(matrix, "normalized")
+
 
 # Execute the main function when the script is run.
 if __name__ == '__main__':
