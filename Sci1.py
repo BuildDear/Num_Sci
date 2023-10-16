@@ -19,8 +19,8 @@ def show_image(image, title="", cmap=None):
 # Enhance the contrast of the image.
 def enhance_contrast(img):
     # Find the minimum and maximum values for each color channel.
-    min_val = img.min(axis=(0, 1), keepdims=True)
-    max_val = img.max(axis=(0, 1), keepdims=True)
+    min_val = 0.02221
+    max_val = 0.1
     # Normalize and scale the image to enhance contrast.
     return ((img - min_val) / (max_val - min_val) * 255).astype(np.uint8)
 

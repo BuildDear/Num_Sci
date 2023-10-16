@@ -5,20 +5,12 @@ from numpy import ndarray
 import matplotlib.pyplot as plt
 
 
-# Function to zero out the diagonal of a matrix and return the original diagonal values.
-def zero_diagonal(matrix: np.ndarray) -> np.ndarray:
-    # Copy the original diagonal values.
-    diagonal_values = np.diagonal(matrix).copy()
-    # Fill the diagonal of the matrix with zeros.
+def null_step_5(matrix: np.ndarray):
+    matrix.flat[::5] = 0
+    return matrix
+
+def null_step_diagonal(matrix: np.ndarray):
     np.fill_diagonal(matrix, 0)
-    # Return the original diagonal values.
-    return diagonal_values
-
-
-# Function to restore the diagonal of a matrix using given diagonal values.
-def restore_diagonal(matrix: np.ndarray, diagonal_values: np.ndarray) -> np.ndarray:
-    # Fill the diagonal of the matrix with the provided diagonal values.
-    np.fill_diagonal(matrix, diagonal_values)
     return matrix
 
 
@@ -40,6 +32,15 @@ def find_average(matrix: ndarray) -> ndarray:
     return np.mean(matrix)
 
 
+def get_gold_value(mean_value: float, average_value: float):
+    return (mean_value + average_value) / 2
+
+
+def fill_zeros_with_mean(matrix: np.ndarray, gold_value: float) -> np.ndarray:
+    matrix[matrix == 0] = gold_value
+    return matrix
+
+
 # Function to find the nearest value to a given value in the matrix.
 def find_nearest_value(matrix: ndarray, value: float) -> float:
     # Calculate the absolute difference between each matrix element and the given value.
@@ -57,34 +58,28 @@ def generate_matrix(rows: int, cols: int) -> ndarray:
 
 def main():
     # Number of rows and columns for the matrix.
-    rows = 19
-    cols = 16
+    rows = 13
+    cols = 17
 
     # Generate a random matrix.
     matrix = generate_matrix(rows, cols)
+    print(matrix)
     visualize_matrix(matrix, "original matrix")
 
     # Ask the user to provide a value.
     value = float(input("Please, enter value to check: "))
-    # Find the nearest value in the matrix to the given value.
-    nearest_value = find_nearest_value(matrix, value)
-    print("The nearest value in matrix is:", nearest_value)
+    print("The nearest value in matrix is:", find_nearest_value(matrix, value))
 
-    # Find and display the average and median values of the matrix.
+    # Find and display the average value of the matrix.
     average = find_average(matrix)
     print(f"The average value of the matrix is: {average}")
+
+    # Find and display the median value of the matrix.
     median = find_median(matrix)
     print(f"The median value of the matrix is: {median}")
 
-    # Zero out the diagonal of the matrix and then restore it.
-    saved_diagonal = zero_diagonal(matrix)
-    visualize_matrix(matrix, "diagonal 0")
+    gold_value = get_gold_value(median, average)
 
-    restore_diagonal(matrix, saved_diagonal)
-    visualize_matrix(matrix, "restored")
-
-    print("\nRestored matrix:")
-    print(matrix)
 
     # Normalize the matrix so that values range between 0 and 1.
     min_value = matrix.min()
